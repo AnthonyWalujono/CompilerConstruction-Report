@@ -100,7 +100,31 @@ This will cover everything in Compile Construction.
 \newline 2.3.2: Convert to a DFA the following NFA
 \newline \indent \includegraphics[width=90mm, scale=1.5]{2.3.2.png}
 
-
+\subsection{Week 4: Introduction to Parsing}
+Question 1: Write out the parse tree (=concrete syntax tree) for the complete fibonacci program. Think about a question on this for the lecture.
+\begin{lstlisting}
+	using system;
+	
+	public class fibonacci
+	{
+		public static in Fib(int n)
+		{
+			if (n <= 1)
+			{
+				return n;
+			}
+			else
+			{
+				return Fib(n -1) + Fib(n - 2)
+			}
+		}
+	}
+\end{lstlisting}
+Question 2: Write out the abstract syntax tree for the complete fibonacci program. 
+\begin{lstlisting}
+bnfc  -d -m fibonacci.cf
+make
+\end{lstlisting}
 
 \begin{thebibliography}{99}
 \bibitem[HMU]{Hopcroft}
