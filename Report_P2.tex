@@ -1,0 +1,108 @@
+\documentclass{article}
+
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage[usenames]{color}
+\usepackage{hyperref}
+  \hypersetup{
+    colorlinks = true,
+    urlcolor = blue,       % color of external links using \href
+    linkcolor= blue,       % color of internal links 
+    citecolor= blue,       % color of links to bibliography
+    filecolor= blue,        % color of file links
+    }
+    
+\usepackage{listings}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=haskell,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\theoremstyle{theorem} 
+   \newtheorem{theorem}{Theorem}[section]
+   \newtheorem{corollary}[theorem]{Corollary}
+   \newtheorem{lemma}[theorem]{Lemma}
+   \newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+   \newtheorem{definition}[theorem]{Definition}
+   \newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}    
+  \newtheorem{remark}[theorem]{Remark}
+
+
+\title{CPSC-402 Report\\Compiler Construction}
+\author{Anthony Walujono \\ Chapman University}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Short  summary of purpose and content.  
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}\label{intro}
+
+This will cover everything in Compile Construction.
+
+\section{Homework}\label{homework}
+\subsection{Week 1: Searching for Strings}
+2.24: Give DFA's accepting the the following languages over the alphabet \{0,1\}:
+\newline \indent b) The set of all strings with three consecutive 0's (not necessarily at the end).
+\newline \indent \includegraphics[width=90mm, scale=1.5]{partB.png}
+\newline \indent c) The set of strings with 011 as a substring.
+\newline \indent \includegraphics[width=90mm, scale=1.5]{partC.png}
+
+\subsection{Week 2: Regular Expression and NFA}
+2.3.4: Give nondeterministic finite automata to accept the following languages. Try to take advantage of nondeterminism as much as possible. 
+\newline \indent a) The set of strings over alphabet \{0,1,...,9\} such that the final digit has appeared before. 
+\newline \indent \includegraphics[width=90mm, scale=1.5]{2.3.4_Part_A.png}
+\newline \indent b) The set of strings over alphabet \{0,1,...,9\} such that the final digit has not appeared before.
+\newline \indent \includegraphics[width=90mm, scale=1.5]{2.3.4_Part_B.png}
+\newline \indent c) The set of strings of 0's and 1's such that there are two 0's separated by a number of positions that is a multiple of 4. Note that 0 is an allowable multiple of 4.
+\newline \indent \includegraphics[width=90mm, scale=1.5]{2.3.4_Part_C.png}
+\newline 2.5.3: Design  $\epsilon$-NFA's for the following languages. Try to use $\epsilon$ transitions to simplify your design. 
+\newline \indent a) The set of strings consisting of zero or more a's followed by zero or more b's, followed by zero or more c's. 
+\newline \indent \includegraphics[width=90mm, scale=1.5]{2.5.3_A.png}
+\newline \indent b) The set of strings that consist of either 01 repeated one or more times or 010 repeated one or more times. 
+\newline \indent \includegraphics[width=90mm, scale=1.5]{2.5.3_B.png}
+\newline \indent c) The set of strings of 0's and 1's such that at least one of the last ten positions is a 1. 
+\newline \indent \includegraphics[width=90mm, scale=1.5]{2.5.3_C.png}
+
+
+
+
+
+\begin{thebibliography}{99}
+\bibitem[HMU]{Hopcroft}
+	John E. Hopcroft, Rajeev Motwani, Jeffrey D. Ullman:
+\href{http://ce.sharif.edu/courses/94-95/1/ce414-2/resources/root/Text%20Books/Automata/John%20E.%20Hopcroft,%20Rajeev%20Motwani,%20Jeffrey%20D.%20Ullman-Introduction%20to%20Automata%20Theory,%20Languages,%20and%20Computations-Prentice%20Hall%20(2006).pdf}{Introduction to automata theory, languages, and computation,} 3rd Edition. Pearson international edition, Addison-Wesley 2007
+
+\end{thebibliography}
+
+\end{document}
