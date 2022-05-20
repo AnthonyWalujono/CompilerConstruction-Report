@@ -125,7 +125,7 @@ Question 2: Write out the abstract syntax tree for the complete fibonacci progra
 \end{center}
 
 \section{Project}
-For this project, I plan to explain a compiler. The language that I would use is C++, and the compiler that I would use is g++. A code that I plan to use is recfile.cpp, which is shown below. My target language would be JVM.
+For this project, I plan to explain a compiler. The language that I would use is C++, and the compiler that I would use is g++. A code that I plan to use is a C++ code that convert Fahrenheit to Celsius, which is shown below. My target language would be JVM.
 \begin{lstlisting}
 #include <iostream>
 double fahrenheitToCelsius(double fahrenheit){
@@ -236,6 +236,161 @@ _GLOBAL__sub_I_fahrenheitToCelsius(double):
         .long   0
         .long   1075970048
 \end{lstlisting}
+
+
+\subsection{Explaining Assembly Code for the FahrenheitToCelsius Function.}
+Here is my code for fahrenheitToCelsius function:
+\begin{lstlisting}
+double fahrenheitToCelsius(double fahrenheit){
+    double celsius;
+ 
+    celsius = (fahrenheit - 32.0) * 5.0 / 9.0;
+    return celsius;
+}
+\end{lstlisting}
+ Here is fahrenheitToCelsius assembly code with line numbers:
+\begin{lstlisting}
+fahrenheitToCelsius(double):
+        4 push    rbp
+        5 mov     rbp, rsp
+        6 movsd   QWORD PTR [rbp-24], xmm0
+        7 movsd   xmm0, QWORD PTR [rbp-24]
+        8 movsd   xmm2, QWORD PTR .LC0[rip]
+        9 movapd  xmm1, xmm0
+        10 subsd   xmm1, xmm2
+        11 movsd   xmm0, QWORD PTR .LC1[rip]
+        12 mulsd   xmm0, xmm1
+        13 movsd   xmm1, QWORD PTR .LC2[rip]
+        14 divsd   xmm0, xmm1
+        15 movsd   QWORD PTR [rbp-8], xmm0
+        16 movsd   xmm0, QWORD PTR [rbp-8]
+        17 movq    rax, xmm0
+        18 movq    xmm0, rax
+        19 pop     rbp
+        20 ret
+\end{lstlisting}
+Here is my explanation for the assembly code (the numbers correspond to each other).
+\newline \newline 4. Save the old base pointer so that later the base pointer value can be restored for the caller when the function returns.
+\newline \newline 5. Move the stack pointer into base pointer. This initial action maintains the base pointer to be used as a point of reference for finding parameters and local variables on the stack.
+\newline \newline 6. Move the value of the register xmm0 which is the function parameter fahrenheit to a memory address at rbp(base pointe) with offset -24 bytes. 
+\newline \newline 7. the value of parameter fahrenheit is stored into a floating point register xmm0.
+\newline \newline 8. Move the value of memory address at LC0[rip], where rip pointer, which holds the value 32.0 to be stored into xmm2 register.
+\newline \newline 9. moveapd refers to Move Aligned Packed Double Precision Floating - Point value, assign register xmm1 to hold the value of register xmm0. So xmm1 = xmm0 = value of fahrenheit. 
+\newline \newline 10. Subtract the value of xmm1 with the value of xmm2, this corresponds to the code fahrenheit - 32.0.
+\newline \newline 11. Move the value of memory address at LC1[rip] which holds 5.0 into xmm0 register. So xmm0 = 5.0.
+\newline \newline 12. Multiply the value of xmm0 with xmm1, the result will be in xmm0. This correspond to the value of variable celsius being calculated as follows:
+celcius = (fahrenehit - 32.0) * 5 
+\newline \newline 13. Move the value 9.0 (from memory address at LC2[rip]) into xmm1.
+\newline \newline 14. divide the value of xmm0 by the value of xmm1 
+\newline \indent \indent xmm0 = celsius = (fahrenheit - 32.0) * 5.0
+\newline \indent \indent xmm1 = 9.0
+\newline This corresponds to the result of calculating: 
+\newline \indent \indent celsius = ((fahrenheit - 32.0) * 5.0)/9.0
+\newline  \indent xmm0 will have the value of variable celcius.
+\newline \newline 15. The value of xmm0 (variable celsius) will be stored at memory address at rbp with offset - 8 bytes.
+\newline \newline 16. Save the value of xmm0 (= varaible celsius).
+\newline \newline 17. Move the value of xmm0 (= variable celsius) to rax register (general purpose register to hold function return value).
+\newline \newline 18. Saved the function return value in xmm0 and rax register.
+\newline \newline 19. Restore the caller's base pointer value by popping off (removing) rbp from the stack.
+\newline \newline 20. Return to the caller and remove appropriate return address from the stack.
+
+\subsection{Explaining Assembly Code for the Main Function.}
+Here is my code for main function:
+\begin{lstlisting}
+18 int main()
+19{
+20    double fahrenheit; 
+21
+22    std::cout << "Enter temperature in fahrenheit (in degrees) ";
+23    std::cin  >> fahrenheit;
+24    std::cout << "Temperature in Celsius (in degrees) = "
+25              << fahrenheitToCelsius(fahrenheit) << std::endl;
+26 }
+\end{lstlisting}
+ Here is main function assembly code with line numbers:
+\begin{lstlisting}
+22 .LC3:
+23         .string "Enter temperature in fahrenheit (in degrees) "
+24 .LC4:
+25         .string "Temperature in Celsius (in degrees) = "
+26 main:
+27 .LFB1746:
+28         push    rbp
+29         mov     rbp, rsp
+30         push    rbx
+31         sub     rsp, 24
+32        mov     esi, OFFSET FLAT:.LC3
+33        mov     edi, OFFSET FLAT:_ZSt4cout
+34        call    _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+35        lea     rax, [rbp-8]
+36        mov     rsi, rax
+37        mov     edi, OFFSET FLAT:_ZSt3cin
+38        call    _ZNSirsERd
+39        mov     esi, OFFSET FLAT:.LC4
+40        mov     edi, OFFSET FLAT:_ZSt4cout
+41        call    _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+42	    mov     rbx, rax
+43        mov     rax, QWORD PTR [rbp-24]
+44        movq    xmm0, rax
+45        call    _Z19fahrenheitToCelsiusd
+46       movq    rax, xmm0
+47        movq    xmm0, rax
+48        mov     rdi, rbx
+49        call    _ZNSolsEd
+50        mov     esi, OFFSET FLAT:_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_
+51        mov     rdi, rax
+52        call    _ZNSolsEPFRSoS_E
+53        mov     eax, 0
+54        mov     rbx, QWORD PTR [rbp-8]
+55        leave
+56        ret
+\end{lstlisting}
+Here is my explanation for the assembly code (the numbers correspond to each other).
+\newline \newline 23. Assigned string value into register LC3.
+\newline .LC3 will have string "Enter temperature in fahrenheit (in degrees)"
+\newline \newline 25. Assigned string value into register LC4.
+\newline .LC4 register will have "Temperature in Celsius (in degrees) ="
+\newline \newline 28. save the old base pointer (rbp) value
+\newline \newline 29. set the new base pointer (rbp) value to be the value of stack pointer (rsp)
+\newline \newline 30. save the value of register rbx that the function will modify later. 
+\newline \newline 31. make room for a 24 bytes local variable (fahrenheit);
+\newline \newline 32. move the value of register LC3 into register esi.
+\newline \newline 33. move the address of the standard library function cout into register edi.
+\newline \newline 34. call standard library function cout. This code corresponds to C++ code line 22
+\begin{lstlisting}
+22    std::cout << "Enter temperature in fahrenheit (in degrees) ";
+\end{lstlisting}
+35. The value of address rbp-24 (base pointer with offset -24) is placed into register rax.
+\newline \newline 36. Move the value of register ra into register rsi. 
+\newline \newline 37. Move the address of the standard library function cin into register edi.
+\newline \newline 38. Call standard library function cin. The value of register rax will be changed. Register rax will hold the value of the input variable fahrenheit. This code corresponds to C++ code on line 23.
+\begin{lstlisting}
+std::cin  >> fahrenheit;
+\end{lstlisting}
+39. Move the value of register LC4 into register esi. 
+\newline \newline 40. Move the address of the standard library function cout into register edi.
+\newline \newline 41. Call standard library function cout. This corresponds to C++ code line 24. 
+\begin{lstlisting}
+std::cout << "Temperature in Celsius (in degrees) = ";
+\end{lstlisting}
+42. Move the value of register rax(= variable fahrenheit) into register rbx.
+\newline \newline 43. Move the value at address rbp-24 (rbp offset -24 byes) into rax register.
+\newline \newline 44. Put the value of register rax into register xmm0. This assigns registers xmm0 to hold the value of variable fahrenheit. To calrify: rax = xmm0 = fahrenheit.
+\newline \newline 45. Call the function fahrenheitToCelsius, this function will take xmm0 as parameter passed by the main function, which hold the input value of variable fahrenheit. This corresponds to C++ code line 25.
+\begin{lstlisting}
+<< fahrenheitToCelsius(fahrenheit) << std::endl;
+\end{lstlisting}
+46. Move the value of register xmm0 into register rax. xmm0 holds the return value from fahrenheitToCelsius function. Register xmm0 = register rax = new value of variable fahrenheit (which is the celsius value).
+\newline \newline 47. Move register rax into register xmm0
+\newline \newline 48. Move the value of register rbx into register rdi.
+\newline \newline 49. Call the standard library cout function to display the new value of parameter fahrenheit returned by function fahrenheitToCelsius. Registers rax and xmm0 both hold the new value of fahrenheit, these registers will be accessed by the standard library cout function.
+\newline \newline 50. Move the value specified by standard library endl (end of line) into register esi.
+\newline \newline 51. Move the value of register rax into register rdi.
+\newline \newline 52. Call the standard library function endl to put end of line in the output.
+\newline \newline 53. Move 0 into register eax (initialize eax to 0)
+\newline \newline 54. Move the value of the address at rbp(base stack) with offset - 8 bytes into register rbx, which will be used for transfer control.
+\newline \newline 55. Leave the main function, pops the entire current stack and make registers available for other purposes.
+\newline \newline 56. Return pops top of stack to the calling routine, in this case end of program execution.
 \begin{thebibliography}{99}
 \bibitem[HMU]{Hopcroft}
 	John E. Hopcroft, Rajeev Motwani, Jeffrey D. Ullman:
